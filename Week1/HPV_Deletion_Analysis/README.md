@@ -360,6 +360,7 @@ Heatmap(
   name = "Normalized RD",
   cluster_rows = TRUE,
   cluster_columns = FALSE,
+  show_column_names = FALSE,
   col = col_fun
 )
 
@@ -419,6 +420,7 @@ Heatmap(
   name = "Normalized RD",
   cluster_rows = TRUE,
   cluster_columns = FALSE,
+  show_column_names = FALSE,
   col = col_fun
 )
 
