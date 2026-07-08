@@ -15,7 +15,7 @@ No previous programming experience is required!
 
 ## Step 1. Install R
 
-Download and install R (the programming language):
+Download and install R:
 
 https://cran.r-project.org/
 
@@ -23,7 +23,7 @@ https://cran.r-project.org/
 
 ## Step 2. Install RStudio
 
-Download and install RStudio Desktop (the coding environment):
+Download and install RStudio Desktop:
 
 https://posit.co/download/rstudio-desktop/
 
@@ -33,13 +33,13 @@ https://posit.co/download/rstudio-desktop/
 
 In RStudio:
 
-```text id="7z39r8"
+```text
 Session
   └── Set Working Directory
          └── Choose Directory...
 ```
 
-Select the folder containing your data files.
+Choose the folder containing your data files.
 
 ---
 
@@ -47,7 +47,7 @@ Select the folder containing your data files.
 
 Open the R console and run:
 
-```r id="slsbqj"
+```r
 install.packages(c(
   "dplyr",
   "data.table",
@@ -66,7 +66,7 @@ BiocManager::install("ComplexHeatmap")
 
 Then load the packages:
 
-```r id="cgcdw6"
+```r
 library(dplyr)
 library(data.table)
 library(ComplexHeatmap)
@@ -83,9 +83,9 @@ library(circlize)
 
 The goal of this project is to visualize **relative read depth changes** across HPV genomic positions and samples.
 
-The final output will be a heatmap like this:
+The final heatmap will look like this:
 
-```text id="a9qgdu"
+```text
 Rows    → HPV genome positions
 Columns → Samples
 Colors  → Normalized read depth
@@ -95,9 +95,9 @@ Colors  → Normalized read depth
 
 # Input File Format
 
-The input file should look like this:
+The input CSV file should look like this:
 
-```text id="nndvr2"
+```text
 HPV_position,Sample1,Sample2,Sample3
 1,550,278,415
 2,971,543,761
@@ -105,20 +105,20 @@ HPV_position,Sample1,Sample2,Sample3
 4,1538,729,1176
 ```
 
-* **HPV_position**: HPV genome coordinates.
-* **Sample columns**: sequencing coverage at each position.
+* `HPV_position` = HPV genome coordinates
+* `Sample columns` = sequencing coverage at each position
 
 ---
 
 # Understanding the Normalization
 
-We perform **two normalization steps**.
+We perform two normalization steps.
 
 ---
 
-# Step 1: Normalize Each Sample
+## Step 1: Normalize Each Sample
 
-```r id="0hbyyt"
+```r
 mean_normalized <- function(x) {
   apply(x, 2, function(y) y / mean(y))
 }
@@ -128,19 +128,22 @@ This removes differences in overall sequencing depth between samples.
 
 For example:
 
-```text id="h4q9pi"
+```text
 Sample A average coverage = 500×
+
 Sample B average coverage = 1000×
 
 After normalization:
-Both samples have mean = 1
+
+Sample A mean = 1
+Sample B mean = 1
 ```
 
 ---
 
-# Step 2: Normalize Each HPV Position
+## Step 2: Normalize Each HPV Position
 
-```r id="t2fz1f"
+```r
 new_func2 <- function(x) {
   apply(x, 1, function(y) y / mean(y + 0.001))
 }
@@ -148,7 +151,7 @@ new_func2 <- function(x) {
 
 This highlights whether a sample has relatively higher or lower coverage than the other samples at the same HPV position.
 
-The `+0.001` avoids dividing by zero.
+The `0.001` avoids dividing by zero.
 
 ---
 
@@ -156,7 +159,7 @@ The `+0.001` avoids dividing by zero.
 
 The general syntax is:
 
-```r id="9ywpml"
+```r
 apply(X, MARGIN, FUN)
 ```
 
@@ -181,15 +184,15 @@ where:
 
 ---
 
-## Example 1: Column Operation
+### Example 1
 
-```r id="0n2t2x"
+```r
 apply(x, 2, mean)
 ```
 
 R computes:
 
-```text id="w5h6s1"
+```text
 mean(Sample1)
 mean(Sample2)
 mean(Sample3)
@@ -197,15 +200,15 @@ mean(Sample3)
 
 ---
 
-## Example 2: Row Operation
+### Example 2
 
-```r id="64r4pr"
+```r
 apply(x, 1, mean)
 ```
 
 R computes:
 
-```text id="ov8vlh"
+```text
 mean(Position1)
 mean(Position2)
 mean(Position3)
@@ -213,60 +216,91 @@ mean(Position3)
 
 ---
 
-## Breaking Down This Code
+### Breaking Down This Code
 
-```r id="5i6n4r"
+```r
 apply(x, 2, function(y) y / mean(y))
 ```
 
 means:
 
-```text id="m7a08z"
-Take one column (y)
+```text
+Take one column
 ↓
-Compute its mean
+Calculate its mean
 ↓
-Divide every value by that mean
+Divide every value by the mean
 ↓
 Move to the next column
 ```
 
 ---
 
-```r id="4kpt7q"
+```r
 apply(x, 1, function(y) y / mean(y + 0.001))
 ```
 
 means:
 
-```text id="jnknx8"
-Take one row (y)
+```text
+Take one row
 ↓
-Compute its mean
+Calculate its mean
 ↓
-Divide every value by that mean
+Divide every value by the mean
 ↓
 Move to the next row
 ```
 
 ---
 
-# Quick Summary
+# Understanding `rm(list = ls())`
 
-| Code             | Meaning                         |
-| ---------------- | ------------------------------- |
-| `apply(x,1,FUN)` | Apply a function to each row    |
-| `apply(x,2,FUN)` | Apply a function to each column |
-| `function(y)`    | Temporary function              |
-| `mean(y)`        | Average value                   |
+```r
+rm(list = ls())
+```
+
+This command removes everything from memory and starts with a clean workspace.
+
+```text
+rm()  = remove
+ls()  = list everything
+
+rm(list = ls())
+↓
+Delete everything and start fresh.
+```
+
+---
+
+# Understanding This Code
+
+```r
+data <- data[, -1]
+data <- as.matrix(data)
+```
+
+### Line 1
+
+```r
+data <- data[, -1]
+```
+
+Remove the first column (`HPV_position`) because it is not numerical data.
+
+### Line 2
+
+```r
+data <- as.matrix(data)
+```
+
+Convert the table into a matrix because `Heatmap()` requires a matrix as input.
 
 ---
 
 # Test Run: Fill in the Blanks
 
-Complete the script below.
-
-```r id="cd8qf5"
+```r
 rm(list = ls())
 
 library(dplyr)
@@ -300,15 +334,15 @@ df2 <- cbind(__________ = rownames(df2), df2)
 
 write.csv(df2, file = "df2.csv", row.names = FALSE)
 
-data <- read.csv("df2.csv", check.names = FALSE)
+data <- read.csv("df2.csv")
 
-rownames <- data$__________
+position <- data$__________
 
-data <- data %>%
-  select(-__________) %>%
-  as.matrix()
+data <- data[, -1]
 
-rownames(data) <- rownames
+data <- as.matrix(data)
+
+rownames(data) <- position
 
 col_fun <- colorRamp2(
   c(0,4),
@@ -336,8 +370,7 @@ dev.off()
 
 # Answer Key
 
-```r id="b0h0lf"
-##change the file name
+```r
 data <- read.csv("HPV16.csv", check.names = FALSE)
 
 data <- data %>% select(-HPV_position)
@@ -352,15 +385,23 @@ new_func2 <- function(x) {
 
 df1 <- as.data.frame(mean_normalized(data))
 
+write.csv(df1, file = "df1.csv", row.names = TRUE)
+
 df2 <- as.data.frame(new_func2(df1))
 
 df2 <- cbind(HPV_position = rownames(df2), df2)
 
-rownames <- data$HPV_position
+write.csv(df2, file = "df2.csv", row.names = FALSE)
 
-data <- data %>%
-  select(-HPV_position) %>%
-  as.matrix()
+data <- read.csv("df2.csv")
+
+position <- data$HPV_position
+
+data <- data[, -1]
+
+data <- as.matrix(data)
+
+rownames(data) <- position
 
 col_fun <- colorRamp2(
   c(0,4),
@@ -372,6 +413,16 @@ pdf(
   width = 7.5,
   height = 4
 )
+
+Heatmap(
+  data,
+  name = "Normalized RD",
+  cluster_rows = TRUE,
+  cluster_columns = FALSE,
+  col = col_fun
+)
+
+dev.off()
 ```
 
 ---
@@ -382,3 +433,4 @@ pdf(
 * White = relatively lower normalized coverage.
 * Continuous low-coverage regions may indicate possible HPV deletions.
 * Similar patterns are grouped together by clustering.
+
