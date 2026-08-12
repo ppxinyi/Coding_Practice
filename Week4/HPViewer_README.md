@@ -12,7 +12,7 @@ By the end of this activity, you will be able to:
 - find the HPV type detected in a sample;
 - interpret read count and RPK values.
 
-> **Important:** This activity is for education and research only. HPViewer results must not be used as a medical diagnosis.
+> **Important:** This activity is for education and research only.
 
 ## What is HPViewer?
 
