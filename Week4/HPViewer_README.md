@@ -209,7 +209,8 @@ python HPViewer.py \
   -o sample_output \
   -p 4
 ```
-
+Dataset for running: https://drive.google.com/drive/folders/103GaWOr37ml-zsqux-QxSAq2MYsSS3Tg?usp=drive_link
+You might need to change the file name in the command above
 View the profile:
 
 ```bash
@@ -321,9 +322,7 @@ This may mean that no HPV reads passed the detection threshold. It does not prov
 2. How many reads were assigned to it?
 3. What does RPK mean?
 4. Why does HPViewer mask repetitive DNA sequences?
-5. Why might homologous regions cause one HPV type to be mistaken for another?
-6. What is the difference between a sequencing read and a reference genome?
-7. What happens if you raise the coverage threshold from 150 to 200 bp?
+
 
 ## Citation and resources
 
