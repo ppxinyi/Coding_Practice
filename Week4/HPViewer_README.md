@@ -315,7 +315,7 @@ Choose a new output name, such as:
 
 This may mean that no HPV reads passed the detection threshold. It does not prove that HPV is absent from the original biological sample because sequencing depth, sample quality, and analytical sensitivity also affect detection.
 
-## Student questions
+## Questions
 
 1. Which HPV type was detected in the test sample?
 2. How many reads were assigned to it?
