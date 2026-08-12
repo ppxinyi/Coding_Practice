@@ -210,7 +210,8 @@ python HPViewer.py \
   -p 4
 ```
 Dataset for running: https://drive.google.com/drive/folders/103GaWOr37ml-zsqux-QxSAq2MYsSS3Tg?usp=drive_link
-You might need to change the file name in the command above
+You might need to change the file name in the command above.
+
 View the profile:
 
 ```bash
